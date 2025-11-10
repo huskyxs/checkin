@@ -1,0 +1,16 @@
+name: Repository Keepalive
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # 每月1号UTC时间0点运行一次
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Keep alive via API
+        run: |
+          curl -X PUT -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/${{ github.repository }}/actions/keepalive"
